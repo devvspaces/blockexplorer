@@ -3,7 +3,7 @@ import { Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Fl
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import styles from '../styles/index.module.scss'
-import { LastestBlock, Transaction } from '@/interfaces'
+import { Block, LastestBlock, Transaction } from '@/interfaces'
 
 
 export default function Home() {
@@ -13,6 +13,9 @@ export default function Home() {
 
   const [isTxLoaded, setTxLoaded] = useState(false)
   const [transactions, setTransactions] = useState<Transaction[]>([])
+
+  const [isLastestBlockLoaded, setLastestBlockLoaded] = useState(false)
+  const [latestBlock, setLastestBlock] = useState<Block>()
 
   useEffect(() => {
 
@@ -41,8 +44,22 @@ export default function Home() {
       setBlocksLoaded(true)
     }
 
+    const lastestBlock = async () => {
+      setLastestBlockLoaded(false)
+      const response = await fetch('/api/lastestBlock')
+      if (!response.ok) {
+        setTimeout(lastestBlock, 2000)
+        console.log("Retrying... in 2 seconds")
+        return
+      }
+      setLastestBlock(await response.json())
+      setLastestBlockLoaded(true)
+    }
+
+
     loadBlocks()
     loadTxs()
+    lastestBlock()
 
   }, [])
 
@@ -61,7 +78,31 @@ export default function Home() {
           })
         }
       </Stack>
+    )
+  }
 
+  function showBlockSkeleton(isLoaded: boolean) {
+    if(!isLoaded) return (
+      <>
+        <Stat minW={"200px"} colorScheme="red">
+          <StatLabel marginBottom={3}>Lastest Block</StatLabel>
+          <Skeleton borderRadius={10} height='60px' isLoaded={isLastestBlockLoaded} />
+        </Stat>
+
+        <Stat minW={"200px"}>
+          <StatLabel marginBottom={3}>Amount</StatLabel>
+          <Skeleton borderRadius={10} height='60px' isLoaded={isLastestBlockLoaded} />
+        </Stat>
+        <Stat minW={"200px"}>
+          <StatLabel marginBottom={3}>Transactions</StatLabel>
+          <Skeleton borderRadius={10} height='60px' isLoaded={isLastestBlockLoaded} />
+        </Stat>
+
+        <Stat minW={"200px"}>
+          <StatLabel marginBottom={3}>Gas Used</StatLabel>
+          <Skeleton borderRadius={10} height='60px' isLoaded={isLastestBlockLoaded} />
+        </Stat>
+      </>
     )
   }
 
@@ -81,27 +122,42 @@ export default function Home() {
         </form>
 
         <StatGroup borderWidth={1} borderRadius={5} padding={7} marginY={10} display={'flex'} flexWrap={'wrap'} gap={5}>
-          <Stat minW={"200px"} colorScheme="red">
-            <StatLabel>Ether Price</StatLabel>
-            <StatNumber>345,670 $</StatNumber>
-          </Stat>
 
-          <Stat minW={"200px"}>
-            <StatLabel>Transactions</StatLabel>
-            <StatNumber>45</StatNumber>
-          </Stat>
+          {showBlockSkeleton(isLastestBlockLoaded)}
 
-          <Stat minW={"200px"}>
-            <StatLabel>Last Finalized Block</StatLabel>
-            <StatNumber>45</StatNumber>
-          </Stat>
+          {
+            isLastestBlockLoaded && (
+              <>
+                <Stat minW={"200px"} colorScheme="red">
+                  <StatLabel marginBottom={3}>Lastest Block</StatLabel>
+                  {
+                    isLastestBlockLoaded && <StatNumber>{latestBlock?.blockNumber}</StatNumber>
+                  }
+                </Stat>
 
-          <Stat minW={"200px"}>
-            <StatLabel>Last Safe Block</StatLabel>
-            <StatNumber>45</StatNumber>
-          </Stat>
+                <Stat minW={"200px"}>
+                  <StatLabel marginBottom={3}>Amount</StatLabel>
+                  {
+                    isLastestBlockLoaded && <StatNumber>{latestBlock?.amount}</StatNumber>
+                  }
+                </Stat>
+                <Stat minW={"200px"}>
+                  <StatLabel marginBottom={3}>Transactions</StatLabel>
+                  {
+                    isLastestBlockLoaded && <StatNumber>{latestBlock?.transactions}</StatNumber>
+                  }
+                </Stat>
+
+                <Stat minW={"200px"}>
+                  <StatLabel marginBottom={3}>Gas Used</StatLabel>
+                  {
+                    isLastestBlockLoaded && <StatNumber>{latestBlock?.gasUsed}</StatNumber>
+                  }
+                </Stat>
+              </>
+            )
+          }
         </StatGroup>
-
 
         <Flex gap={10} justifyContent={'space-between'}>
           <Card className={styles.cardBox}>
@@ -194,14 +250,3 @@ export default function Home() {
     </>
   )
 }
-
-
-// export async function getServerSideProps() {
-
-//   const blocks = await getLatestBlocks(10)
-
-//   console.log(blocks)
-//   return {
-//     props: {}
-//   }
-// }
