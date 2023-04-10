@@ -1,5 +1,5 @@
-import { Box, Button, Container, Flex, Heading, useColorMode, useColorModeValue } from '@chakra-ui/react';
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { Box, Button, Container, Flex, Heading, Input, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { MoonIcon, SearchIcon, SunIcon } from '@chakra-ui/icons';
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -14,12 +14,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Heading as='h3'>
             Ethereum Explorer
           </Heading>
-
           <Button display={'block'} colorScheme='teal' onClick={toggleColorMode}>
             {bgColor === 'dark' ? <MoonIcon /> : <SunIcon />}
           </Button>
         </Flex>
+
+        <form action="" >
+          <Flex marginX={"auto"} alignItems={'stretch'} justifyContent={"center"} gap={"1rem"} mt={"2rem"}>
+            <Input type="text" name="search" id="search" placeholder="Search for a block, transaction, or address" size={"lg"} />
+            <Button height={"46px"} colorScheme={"blue"}><SearchIcon /></Button>
+          </Flex>
+        </form>
       </Container>
+
       <Container maxW='container.xl' py={5}>
         {children}
       </Container>

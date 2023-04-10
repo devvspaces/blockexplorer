@@ -1,3 +1,5 @@
+import { BlockWithTransactions } from "alchemy-sdk";
+
 export interface Block {
     blockNumber: number,
     transactions: number,
@@ -6,7 +8,7 @@ export interface Block {
     gasUsed: number,
 }
 
-export interface LastestBlock extends Block {}
+export interface LastestBlock extends Block { }
 
 export type Transaction = {
     txHash: string,
@@ -14,3 +16,12 @@ export type Transaction = {
     to: string,
     amount: number,
 }
+
+export interface BlockWithTransactionsData extends Omit<BlockWithTransactions, 'gasUsed'> {
+    transactionCount: number;
+    total: string;
+    gasUsed: number;
+}
+
+
+export type DynamicObject = { [key: string]: any }

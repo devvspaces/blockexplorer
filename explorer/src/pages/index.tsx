@@ -113,14 +113,6 @@ export default function Home() {
       </Head>
 
       <div>
-
-        <form action="">
-          <Flex marginX={"auto"} alignItems={'stretch'} justifyContent={"center"} gap={"1rem"}>
-            <Input type="text" name="search" id="search" placeholder="Search for a block, transaction, or address" size={"lg"} />
-            <Button height={"46px"} colorScheme={"blue"}><SearchIcon /></Button>
-          </Flex>
-        </form>
-
         <StatGroup borderWidth={1} borderRadius={5} padding={7} marginY={10} display={'flex'} flexWrap={'wrap'} gap={5}>
 
           {showBlockSkeleton(isLastestBlockLoaded)}

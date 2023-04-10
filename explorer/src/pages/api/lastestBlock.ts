@@ -1,4 +1,4 @@
-import { getLastestBlockWithTx, getLatestBlocks } from "@/config"
+import { getLastestBlockWithTx, getLatestBlocks } from "@/common/sdk"
 import { NextApiRequest, NextApiResponse } from "next"
 import { Utils } from 'alchemy-sdk'
 
