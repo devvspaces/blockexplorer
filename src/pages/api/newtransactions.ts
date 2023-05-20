@@ -1,4 +1,4 @@
-import { getBlockNumber, getBlockWithTransactions, getLatestBlocks } from "@/config"
+import { getBlockNumber, getBlockWithTransactions } from "@common/sdk"
 import { NextApiRequest, NextApiResponse } from "next"
 import { Utils } from 'alchemy-sdk'
 
@@ -13,6 +13,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     txHash: tx.hash,
     from: tx.from,
     to: tx.to,
-    amount: parseFloat(Utils.formatEther(tx.value.toHexString())).toFixed(6),
+    amount: Utils.formatEther(tx.value.toString()),
   })))
 }

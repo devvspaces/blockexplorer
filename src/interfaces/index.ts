@@ -1,4 +1,4 @@
-import { BlockWithTransactions } from "alchemy-sdk";
+import { BlockWithTransactions, TransactionResponse } from "alchemy-sdk";
 
 export interface Block {
     blockNumber: number,
@@ -21,6 +21,11 @@ export interface BlockWithTransactionsData extends Omit<BlockWithTransactions, '
     transactionCount: number;
     total: string;
     gasUsed: number;
+    finalized: boolean;
+    transactions: Array<TransactionResponse & {
+      amount: string;
+      currency: string;
+    }>;
 }
 
 

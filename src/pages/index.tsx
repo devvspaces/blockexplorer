@@ -1,12 +1,14 @@
-import { SearchIcon } from '@chakra-ui/icons'
 import { Badge, Box, Button, Card, CardBody, CardFooter, CardHeader, Divider, Flex, Heading, Input, Skeleton, Stack, StackDivider, Stat, StatGroup, StatLabel, StatNumber, Text } from '@chakra-ui/react'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import styles from '../styles/index.module.scss'
-import { Block, LastestBlock, Transaction } from '@/interfaces'
+import { Block, LastestBlock, Transaction } from '@interfaces/index'
+import { useRouter } from 'next/router'
 
 
 export default function Home() {
+
+  const router = useRouter()
 
   const [isBlocksLoaded, setBlocksLoaded] = useState(false)
   const [blocks, setBlocks] = useState<LastestBlock[]>([])
@@ -19,11 +21,12 @@ export default function Home() {
 
   useEffect(() => {
 
+    const timeouts: any[] = []
     const loadTxs = async () => {
       setTxLoaded(false)
       const response = await fetch('/api/newtransactions?limit=30')
       if (!response.ok) {
-        setTimeout(loadTxs, 2000)
+        const timeout: any = setTimeout(loadTxs, 2000)
         console.log("Retrying... in 2 seconds")
         return
       }
@@ -36,7 +39,8 @@ export default function Home() {
       setBlocksLoaded(false)
       const response = await fetch('/api/blocks?limit=10')
       if (!response.ok) {
-        setTimeout(loadBlocks, 2000)
+        const timeout: any = setTimeout(loadBlocks, 2000)
+        timeouts.push(timeout)
         console.log("Retrying... in 2 seconds")
         return
       }
@@ -48,7 +52,8 @@ export default function Home() {
       setLastestBlockLoaded(false)
       const response = await fetch('/api/lastestBlock')
       if (!response.ok) {
-        setTimeout(lastestBlock, 2000)
+        const timeout: any = setTimeout(lastestBlock, 2000)
+        timeouts.push(timeout)
         console.log("Retrying... in 2 seconds")
         return
       }
@@ -56,10 +61,15 @@ export default function Home() {
       setLastestBlockLoaded(true)
     }
 
-
     loadBlocks()
     loadTxs()
     lastestBlock()
+
+    return () => {
+      timeouts.forEach(timeout => {
+        clearTimeout(timeout)
+      })
+    }
 
   }, [])
 
@@ -82,7 +92,7 @@ export default function Home() {
   }
 
   function showBlockSkeleton(isLoaded: boolean) {
-    if(!isLoaded) return (
+    if (!isLoaded) return (
       <>
         <Stat minW={"200px"} colorScheme="red">
           <StatLabel marginBottom={3}>Lastest Block</StatLabel>
@@ -109,7 +119,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Blockchain Explorer</title>
+        <title>Ethereum Blockchain Explorer</title>
       </Head>
 
       <div>
@@ -166,7 +176,12 @@ export default function Home() {
                 {
                   isBlocksLoaded && blocks.map((block, index) => {
                     return (
-                      <Flex key={index} justifyContent={'space-between'} alignItems={"center"}>
+                      <Flex
+                        key={index}
+                        justifyContent={'space-between'}
+                        onClick={() => router.push(`/block/${block.blockNumber}`)}
+                        cursor='pointer'
+                        alignItems={"center"}>
                         <Box>
                           <Heading size='xs' textTransform='uppercase'>
                             Block No: {block.blockNumber}

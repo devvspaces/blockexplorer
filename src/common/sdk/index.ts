@@ -1,4 +1,4 @@
-import { alchemy } from "@/config";
+import { alchemy } from "@config/index";
 
 export async function getBlockNumber() {
   return alchemy.core.getBlockNumber()
@@ -26,6 +26,6 @@ export async function getBlockWithTransactions(blockNumber: number) {
   return alchemy.core.getBlockWithTransactions(blockNumber)
 }
 
-export async function getTxReceipt(blockNumber: number) {
+export async function getTxReceipts(blockNumber: number) {
   return alchemy.core.getTransactionReceipts({ blockNumber: blockNumber.toString() })
 }
