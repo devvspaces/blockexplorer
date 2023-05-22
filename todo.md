@@ -1,6 +1,5 @@
 # Todo
 
-- View transaction receipt
 - View address details
   - balance
   - transactions
