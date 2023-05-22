@@ -1,3 +1,4 @@
+import { REQUIRED_CONFIRMATION } from "@common/constants"
 import { BigNumber, TransactionResponse } from "alchemy-sdk"
 import { Utils } from 'alchemy-sdk'
 
@@ -38,7 +39,7 @@ export const bigNumbersToNumber = (data: { [key: string]: any }) => {
   keys.forEach(key => {
     if (data[key] instanceof BigNumber) {
       const value: BigNumber = data[key];
-      newData[key] = value.toNumber();
+      newData[key] = value.toString();
     } else {
       newData[key] = data[key]
     }
@@ -46,3 +47,40 @@ export const bigNumbersToNumber = (data: { [key: string]: any }) => {
 
   return newData;
 }
+
+export const txToCurrency = (tx: TransactionResponse) => {
+  let amount = tx.value.toString()
+  let currency = "Wei"
+  if (parseInt(amount) > 1_000_000) {
+    amount = Utils.formatEther(tx.value.toString())
+    currency = 'ETH'
+  }
+  return {
+    ...tx,
+    amount,
+    currency,
+  }
+}
+
+
+export const isConfirmed = (confirmations: number) => {
+  return confirmations >= REQUIRED_CONFIRMATION
+}
+
+
+export const getTxnType = (type: number) => {
+  switch (type) {
+    case 0:
+      return "Legacy"
+    case 1:
+      return "Contract Creation"
+    case 2:
+      return "Contract Call"
+    case 3:
+      return "Contract Creation (Ethreum Istanbul Hard Fork)"
+
+    default:
+      return null;
+  }
+}
+

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import styles from '../styles/index.module.scss'
 import { Block, LastestBlock, Transaction } from '@interfaces/index'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 
 export default function Home() {
@@ -223,10 +224,14 @@ export default function Home() {
                 {
                   transactions.map((obj, index) => {
                     return (
-                      <Flex key={index} justifyContent={'space-between'} alignItems={"center"}>
+                      <Flex
+                      key={index}
+                      justifyContent={'space-between'}
+                      alignItems={"center"}
+                      >
                         <Box>
                           <Heading size='xs' textTransform='uppercase'>
-                            Tx Hash: <a href="">{trimAddress(obj.txHash)}</a>
+                            Tx Hash: <Link color='blue' href={`/tx/${obj.txHash}`}>{trimAddress(obj.txHash)}</Link>
                           </Heading>
                           <Text pt='2' fontSize='sm'>
                             {trimAddress(obj.from)} <strong>to</strong> {trimAddress(obj.to)}

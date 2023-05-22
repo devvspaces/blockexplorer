@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { bigNumbersToNumber, calculateTransactionTotal } from "@common/sdk/utils";
+import { bigNumbersToNumber, calculateTransactionTotal, isConfirmed, txToCurrency } from "@common/sdk/utils";
 import { getBlockNumber, getBlockWithTransactions } from "@common/sdk";
 import { Utils } from "alchemy-sdk";
 
@@ -25,23 +25,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const data = {
     ...block,
     baseFeePerGas: block.baseFeePerGas ? Utils.formatEther(block.baseFeePerGas) : null,
-    finalized: confirmations >= 6,
+    finalized: isConfirmed(confirmations),
     transactionCount: block.transactions.length,
     total: calculateTransactionTotal(block.transactions),
-    transactions: block.transactions.map(tx => {
-      let amount = tx.value.toString()
-      let currency = "wei"
-      if (parseInt(amount) > 1_000_000) {
-        amount = Utils.formatEther(tx.value.toString())
-        currency = 'eth'
-      }
-
-      return {
-        ...tx,
-        amount,
-        currency,
-      }
-    })
+    transactions: block.transactions.map(txToCurrency)
   }
 
   res.status(200).json(bigNumbersToNumber(data))

@@ -1,4 +1,5 @@
-import { BlockWithTransactions, TransactionResponse } from "alchemy-sdk";
+import { getTxnType, txToCurrency } from "@common/sdk/utils";
+import { BlockWithTransactions, TransactionReceipt, TransactionResponse } from "alchemy-sdk";
 
 export interface Block {
     blockNumber: number,
@@ -27,6 +28,23 @@ export interface BlockWithTransactionsData extends Omit<BlockWithTransactions, '
       currency: string;
     }>;
 }
+
+export type TxType = ReturnType<typeof txToCurrency> & TransactionReceipt & {
+  finalized: boolean;
+  txFeeFormat: {
+    gwei: string;
+    eth: string;
+  };
+  gasPriceFormat: {
+    gwei: string;
+    eth: string;
+  };
+  gasUsedPercent: number;
+  typeFormat: ReturnType<typeof getTxnType>,
+  timestamp: number;
+  gasLimit: string;
+  gasUsed: string;
+};
 
 
 export type DynamicObject = { [key: string]: any }

@@ -26,6 +26,14 @@ export async function getBlockWithTransactions(blockNumber: number) {
   return alchemy.core.getBlockWithTransactions(blockNumber)
 }
 
+export async function getTransaction(hash: string) {
+  return alchemy.core.getTransaction(hash)
+}
+
+export async function getTransactionReceipt(hash: string) {
+  return alchemy.core.getTransactionReceipt(hash)
+}
+
 export async function getTxReceipts(blockNumber: number) {
   return alchemy.core.getTransactionReceipts({ blockNumber: blockNumber.toString() })
 }

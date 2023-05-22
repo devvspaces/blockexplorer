@@ -6,8 +6,8 @@ export const getBoxes = (data: DynamicObject) => {
   return Object.keys(data).map((key, index) => {
     return (
       <Box pb='1rem' key={index}>
-        <Text fontSize='sm' fontWeight={"semibold"}>{capitalizeString(key)}:</Text>
-        <Text fontSize='sm'>{data[key]}</Text>
+        <Text fontSize='md' fontWeight={"semibold"}>{capitalizeString(key)}:</Text>
+        <Text fontSize='md'>{data[key]}</Text>
       </Box>
     )
   })
