@@ -200,14 +200,6 @@ export default function Home() {
                 }
               </Stack>
             </CardBody>
-
-            <Divider />
-
-            <CardFooter>
-              <Button variant='ghost' colorScheme='blue'>
-                See more
-              </Button>
-            </CardFooter>
           </Card>
 
           <Card className={styles.cardBox}>
@@ -246,14 +238,6 @@ export default function Home() {
                 }
               </Stack>
             </CardBody>
-
-            <Divider />
-
-            <CardFooter>
-              <Button variant='ghost' colorScheme='blue'>
-                See all
-              </Button>
-            </CardFooter>
           </Card>
         </Flex>
 

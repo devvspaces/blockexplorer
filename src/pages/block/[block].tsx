@@ -23,7 +23,7 @@ import { trimAddress } from '@common/utils'
 import { readableTimestamp } from '@common/utils/date'
 
 
-export default function Home({ blockNumber }: { blockNumber: number }) {
+export default function Page({ blockNumber }: { blockNumber: number }) {
 
   const [isBlockLoaded, setBlockLoaded] = useState(false)
   const [block, setBlock] = useState<BlockWithTransactionsData>()

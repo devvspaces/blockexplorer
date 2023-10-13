@@ -22,10 +22,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </Button>
         </Flex>
 
-        <form action="" >
+        <form action="" onSubmit={(e) => {
+          e.preventDefault();
+          const search = (document.getElementById('search') as HTMLInputElement).value;
+          if (!search.startsWith('0x')) {
+            window.location.href = `/block/${search}`;
+            return;
+          }
+          if (search.length == 42) {
+            window.location.href = `/address/${search}`;
+            return;
+          }
+          window.location.href = `/tx/${search}`;
+        }}>
           <Flex marginX={"auto"} alignItems={'stretch'} justifyContent={"center"} gap={"1rem"} mt={"2rem"}>
-            <Input type="text" name="search" id="search" placeholder="Search for a block, transaction, or address" size={"lg"} />
-            <Button height={"46px"} colorScheme={"blue"}><SearchIcon /></Button>
+            <Input required type="text" name="search" id="search" placeholder="Search for a block, transaction, or address" size={"lg"} />
+            <Button type='submit' height={"46px"} colorScheme={"blue"}><SearchIcon /></Button>
           </Flex>
         </form>
       </Container>

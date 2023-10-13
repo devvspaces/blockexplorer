@@ -4,6 +4,8 @@
   - balance
   - transactions
 - Search by block number, tx hash, block hash, address
+
+
 - NFT features
   - Given a contract address and token id, can you get the NFT's metadata?
   - What is the floor price of an NFT right now?
