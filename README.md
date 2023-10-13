@@ -1,3 +1,17 @@
+# Ethereum Block Explorer
+
+This is a simple Ethereum block explorer built with Next.js and Alchemy's SDK. It allows you to search for blocks and transactions by hash or block number. It also displays the latest block and transaction on the Ethereum mainnet.
+
+## Features
+
+- Search for blocks and transactions by hash or block number
+- Search for addresses and get their balance
+- Get address token holdings
+- Get the latest block and transaction on the Ethereum mainnet
+- Responsive design
+- Dark and light mode
+- Get block and transactions
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
